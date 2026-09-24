@@ -79,8 +79,8 @@ def log_event(scope, message, level=logging.INFO, *args):
 # ADMIN_IDS=123,456   -> ye "OWNERS" hai, sirf ye naye bot-admin add/remove kar sakte hai
 
 BOT_TOKEN = os.getenv("SPIDER_BOT_TOKEN")
-BRAND = "@spiderxescrow"
-PROVIDER = "@spiderxescrow"
+BRAND = "@SPIDERXESCROWSERVICE"
+PROVIDER = "@SPIDERXESCROWSERVICE"
 
 MONGO_URI = os.getenv("MONGO_URI")
 OWNER_IDS = set(
@@ -259,8 +259,8 @@ def status_for_target(user_id, username, first_name):
         f"  {pe('💰')} ➤ {totals.get('USDT', 0.0):g} USDT\n"
         f"  {pe('🤑')} ➤ {totals.get('INR', 0.0):g} ₹\n"
         "──────────────────\n"
-        f"{pe('📱')} Escrow Bot for {BRAND}\n"
-        f"{pe('💤')} Provided by {PROVIDER} !"
+        f"{pe('📱')} Escrow Bot for @SPIDERXESCROWSERVICE\n"
+        f"{pe('💤')} Provided by @SPIDERXESCROWSERVICE !"
     )
 
 
@@ -408,7 +408,7 @@ def normalize_bold(text):
 #
 # Neeche di gayi IDs me se check / trade / escrow verify ho chuki hain (working).
 PE = {
-    "⭐️": "5181422544162391976",
+    "⭐️": "6307695271346184221",
     "❤️": "5260535596941582167",
     "💬": "5258330865674494479",
     "🍑": "5323761960829862762",
@@ -503,7 +503,7 @@ def welcome_text(first_name):
         f"{pe('⭐️')} <b>Welcome {esc(first_name)}!</b>\n"
         "╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\n"
         f"{pe('❤️')} Escrow Bot for {BRAND}\n"
-        f"{pe('💬')} Provided by {PROVIDER}\n\n"
+        f"{pe('💬')} Provided by @SPIDERXESCROWSERVICE\n\n"
         f"{pe('🍑')} <b>This is Your Personal Dashboard:</b>\n"
         "╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\n"
         f"Select the option below {pe('⚡️')}\n"
@@ -1281,7 +1281,7 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{pe('🛡️')} Escrowed By: {esc(deal.get('escrowed_by', '-'))}\n\n"
             f"~ {esc(deal['buyer'])} and {esc(deal['seller'])} are requested to "
             f"drop the vouch before leaving👇🏻\n\n"
-            f"<code>Vouch @spiderxescrow for "
+            f"<code>Vouch {esc(deal.get('escrowed_by', '-'))} for "
             f"{fmt(released_val, currency_val)} smooth escrow deal</code>\n"
         )
 
