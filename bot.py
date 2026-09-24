@@ -2690,25 +2690,243 @@ def start_dummy_server():
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
-            body = b"RizzlerXEscrow bot is running"
+            html = b"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spider Escrow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #20243a 0%,
+                    #0d0f17 45%,
+                    #07080d 100%
+                );
+        }
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            padding: 38px 28px;
+            text-align: center;
+
+            border-radius: 24px;
+
+            background: rgba(20, 22, 34, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            font-size: 32px;
+
+            background: linear-gradient(
+                135deg,
+                #7c3aed,
+                #4f46e5
+            );
+
+            box-shadow:
+                0 12px 30px rgba(99, 102, 241, 0.35);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 27px;
+            letter-spacing: -0.6px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin: 14px 0 10px;
+            padding: 8px 14px;
+
+            border-radius: 999px;
+
+            font-size: 13px;
+            color: #b9fbc0;
+
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+            background: #22c55e;
+
+            box-shadow:
+                0 0 12px #22c55e;
+        }
+
+        p {
+            margin: 10px 0 24px;
+
+            color: #9699a8;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .telegram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            width: 100%;
+            padding: 13px 20px;
+
+            border-radius: 13px;
+
+            color: #ffffff;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            background: linear-gradient(
+                135deg,
+                #229ed9,
+                #168acd
+            );
+
+            box-shadow:
+                0 10px 25px rgba(34, 158, 217, 0.22);
+
+            transition: 0.2s ease;
+        }
+
+        .telegram:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 14px 30px rgba(34, 158, 217, 0.30);
+        }
+
+        .footer {
+            margin-top: 22px;
+
+            color: #666978;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="logo">🕷️</div>
+
+        <h1>Spider Escrow</h1>
+
+        <div class="status">
+            <span class="dot"></span>
+            Service Online
+        </div>
+
+        <p>
+            Secure escrow service is online and ready.
+        </p>
+
+        <a
+            class="telegram"
+            href="https://t.me/SPIDERXESCROWSERVICE"
+            target="_blank"
+        >
+            ✈️ @SPIDERXESCROWSERVICE
+        </a>
+
+        <div class="footer">
+            Spider Escrow Service
+        </div>
+
+    </div>
+
+</body>
+</html>"""
+
+            body = html
+
             self.send_response(200)
-            self.send_header("Content-Type", "text/plain; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
+            self.send_header(
+                "Content-Type",
+                "text/html; charset=utf-8"
+            )
+            self.send_header(
+                "Content-Length",
+                str(len(body))
+            )
             self.end_headers()
+
             self.wfile.write(body)
 
         def do_HEAD(self):
             self.send_response(200)
+            self.send_header(
+                "Content-Type",
+                "text/html; charset=utf-8"
+            )
             self.end_headers()
 
         def log_message(self, *args):
             pass
 
-    server = ThreadingHTTPServer(("0.0.0.0", port), Handler)
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    log_event("HTTP", "health server listening on port %d", logging.INFO, port)
+    server = ThreadingHTTPServer(
+        ("0.0.0.0", port),
+        Handler
+    )
 
+    threading.Thread(
+        target=server.serve_forever,
+        daemon=True
+    ).start()
 
+    log_event(
+        "HTTP",
+        "health server listening on port %d",
+        logging.INFO,
+        port
+    )
+    
 # ===========================
 # GLOBAL ERROR HANDLER
 # ===========================
