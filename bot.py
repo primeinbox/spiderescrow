@@ -2690,7 +2690,7 @@ def start_dummy_server():
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
-            html = b"""<!DOCTYPE html>
+            html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2709,17 +2709,10 @@ def start_dummy_server():
             align-items: center;
             justify-content: center;
             padding: 20px;
-
             font-family: Arial, Helvetica, sans-serif;
             color: #ffffff;
-
             background:
-                radial-gradient(
-                    circle at top,
-                    #20243a 0%,
-                    #0d0f17 45%,
-                    #07080d 100%
-                );
+                radial-gradient(circle at top, #20243a 0%, #0d0f17 45%, #07080d 100%);
         }
 
         .card {
@@ -2727,16 +2720,12 @@ def start_dummy_server():
             max-width: 430px;
             padding: 38px 28px;
             text-align: center;
-
             border-radius: 24px;
-
             background: rgba(20, 22, 34, 0.82);
             border: 1px solid rgba(255, 255, 255, 0.08);
-
             box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.45),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
             backdrop-filter: blur(15px);
         }
 
@@ -2744,23 +2733,13 @@ def start_dummy_server():
             width: 70px;
             height: 70px;
             margin: 0 auto 20px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 20px;
-
             font-size: 32px;
-
-            background: linear-gradient(
-                135deg,
-                #7c3aed,
-                #4f46e5
-            );
-
-            box-shadow:
-                0 12px 30px rgba(99, 102, 241, 0.35);
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.35);
         }
 
         h1 {
@@ -2773,15 +2752,11 @@ def start_dummy_server():
             display: inline-flex;
             align-items: center;
             gap: 8px;
-
             margin: 14px 0 10px;
             padding: 8px 14px;
-
             border-radius: 999px;
-
             font-size: 13px;
             color: #b9fbc0;
-
             background: rgba(34, 197, 94, 0.10);
             border: 1px solid rgba(34, 197, 94, 0.20);
         }
@@ -2789,17 +2764,13 @@ def start_dummy_server():
         .dot {
             width: 8px;
             height: 8px;
-
             border-radius: 50%;
             background: #22c55e;
-
-            box-shadow:
-                0 0 12px #22c55e;
+            box-shadow: 0 0 12px #22c55e;
         }
 
         p {
             margin: 10px 0 24px;
-
             color: #9699a8;
             font-size: 14px;
             line-height: 1.5;
@@ -2810,40 +2781,25 @@ def start_dummy_server():
             align-items: center;
             justify-content: center;
             gap: 9px;
-
             width: 100%;
             padding: 13px 20px;
-
             border-radius: 13px;
-
             color: #ffffff;
             text-decoration: none;
-
             font-size: 14px;
             font-weight: 600;
-
-            background: linear-gradient(
-                135deg,
-                #229ed9,
-                #168acd
-            );
-
-            box-shadow:
-                0 10px 25px rgba(34, 158, 217, 0.22);
-
+            background: linear-gradient(135deg, #229ed9, #168acd);
+            box-shadow: 0 10px 25px rgba(34, 158, 217, 0.22);
             transition: 0.2s ease;
         }
 
         .telegram:hover {
             transform: translateY(-2px);
-
-            box-shadow:
-                0 14px 30px rgba(34, 158, 217, 0.30);
+            box-shadow: 0 14px 30px rgba(34, 158, 217, 0.30);
         }
 
         .footer {
             margin-top: 22px;
-
             color: #666978;
             font-size: 12px;
         }
@@ -2851,10 +2807,8 @@ def start_dummy_server():
 </head>
 
 <body>
-
     <div class="card">
-
-        <div class="logo">🕷️</div>
+        <div class="logo">&#128蜘蛛;</div>
 
         <h1>Spider Escrow</h1>
 
@@ -2872,19 +2826,17 @@ def start_dummy_server():
             href="https://t.me/SPIDERXESCROWSERVICE"
             target="_blank"
         >
-            ✈️ @SPIDERXESCROWSERVICE
+            &#9992; @SPIDERXESCROWSERVICE
         </a>
 
         <div class="footer">
             Spider Escrow Service
         </div>
-
     </div>
-
 </body>
 </html>"""
 
-            body = html
+            body = html.encode("utf-8")
 
             self.send_response(200)
             self.send_header(
