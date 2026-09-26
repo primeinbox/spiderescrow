@@ -974,8 +974,9 @@ async def add(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     msg = (
         f"{pe('💰')} <b>Deal Amount:</b> {fmt(amount_val, currency_val)}\n"
-        f"{pe('📤')} <b>Fee:</b> {fee_percent:.2f}% — {fmt(fee_amount, currency_val)}\n"
-        f"{pe('📤')} <b>Net Release:</b> {fmt(release_val, currency_val)}\n"
+        # f"{pe('📤')} <b>Fee:</b> {fee_percent:.2f}% — {fmt(fee_amount, currency_val)}\n"
+        # f"{pe('📤')} <b>Net Release:</b> {fmt(release_val, currency_val)}\n"
+        f"{pe('📤')} <b>Net Release:</b> {fmt(amount_val, currency_val)}\n"
         f"{pe('🆔')} <b>Trade ID:</b> <code>{esc(tid)}</code>\n\n"
         f"{pe('👤')} <b>Buyer:</b> {esc(buyer_val)}\n"
         f"{pe('👤')} <b>Seller:</b> {esc(seller_val)}\n"
