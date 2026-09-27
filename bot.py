@@ -454,17 +454,19 @@ def pe(emoji):
 def calculate_fee(amount, is_exchange=False):
     if is_exchange:
         return amount * 0.025
-    if amount < 200:
-        return 10.0
+
+    if amount <= 50:
+        return 3.0
+    elif amount <= 100:
+        return 5.0
     elif amount <= 500:
-        return 20.0
+        return 10.0
+    elif amount <= 1000:
+        return 15.0
     elif amount <= 2000:
-        return amount * 0.04
-    elif amount <= 3000:
-        return amount * 0.035
+        return 20.0
     else:
         return amount * 0.03
-
 
 # ===========================
 # Dashboard views
@@ -974,9 +976,9 @@ async def add(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     msg = (
         f"{pe('💰')} <b>Deal Amount:</b> {fmt(amount_val, currency_val)}\n"
-        # f"{pe('📤')} <b>Fee:</b> {fee_percent:.2f}% — {fmt(fee_amount, currency_val)}\n"
-        # f"{pe('📤')} <b>Net Release:</b> {fmt(release_val, currency_val)}\n"
-        f"{pe('📤')} <b>Net Release:</b> {fmt(amount_val, currency_val)}\n"
+        f"{pe('📤')} <b>Fee:</b> {fee_percent:.2f}% — {fmt(fee_amount, currency_val)}\n"
+        f"{pe('📤')} <b>Net Release:</b> {fmt(release_val, currency_val)}\n"
+        # f"{pe('📤')} <b>Net Release:</b> {fmt(amount_val, currency_val)}\n"
         f"{pe('🆔')} <b>Trade ID:</b> <code>{esc(tid)}</code>\n\n"
         f"{pe('👤')} <b>Buyer:</b> {esc(buyer_val)}\n"
         f"{pe('👤')} <b>Seller:</b> {esc(seller_val)}\n"
