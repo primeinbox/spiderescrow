@@ -59,7 +59,7 @@ def setup_logging():
 
 
 setup_logging()
-logger = logging.getLogger("spiderxescrow")
+logger = logging.getLogger("kaalescrow")
 
 
 def log_event(scope, message, level=logging.INFO, *args):
@@ -74,13 +74,13 @@ def log_event(scope, message, level=logging.INFO, *args):
 # ===========================
 # Config (.env se aata hai)
 # ===========================
-# SPIDER_BOT_TOKEN=xxxx
+# KAAL_BOT_TOKEN=xxxx
 # MONGO_URI=xxxx
 # ADMIN_IDS=123,456   -> ye "OWNERS" hai, sirf ye naye bot-admin add/remove kar sakte hai
 
-BOT_TOKEN = os.getenv("SPIDER_BOT_TOKEN")
-BRAND = "@SPIDERXESCROWSERVICE"
-PROVIDER = "@SPIDERXESCROWSERVICE"
+BOT_TOKEN = os.getenv("KAAL_BOT_TOKEN")
+BRAND = "@KAALESCROWGROUP"
+PROVIDER = "@KAALESCROWGROUP"
 
 MONGO_URI = os.getenv("MONGO_URI")
 OWNER_IDS = set(
@@ -96,13 +96,13 @@ ADMIN_ALIASES = {
 }
 
 mongo_client = MongoClient(MONGO_URI) if MONGO_URI else None
-mongo_db = mongo_client["spider_escrow_bots"] if mongo_client else None
-coll = mongo_db["deals_spiderxescrow"] if mongo_db is not None else None
-meta_coll = mongo_db["meta_spiderxescrow"] if mongo_db is not None else None
-admins_coll = mongo_db["bot_admins_spiderxescrow"] if mongo_db is not None else None
-users_coll = mongo_db["broadcast_users_spiderxescrow"] if mongo_db is not None else None
-groups_coll = mongo_db["groups_spiderxescrow"] if mongo_db is not None else None
-automod_coll = mongo_db["group_automod_spiderxescrow"] if mongo_db is not None else None
+mongo_db = mongo_client["kaal_escrow_bots"] if mongo_client else None
+coll = mongo_db["deals_kaalescrow"] if mongo_db is not None else None
+meta_coll = mongo_db["meta_kaalescrow"] if mongo_db is not None else None
+admins_coll = mongo_db["bot_admins_kaalescrow"] if mongo_db is not None else None
+users_coll = mongo_db["broadcast_users_kaalescrow"] if mongo_db is not None else None
+groups_coll = mongo_db["groups_kaalescrow"] if mongo_db is not None else None
+automod_coll = mongo_db["group_automod_kaalescrow"] if mongo_db is not None else None
 
 DEALS = {}
 
@@ -259,8 +259,8 @@ def status_for_target(user_id, username, first_name):
         f"  {pe('💰')} ➤ {totals.get('USDT', 0.0):g} USDT\n"
         f"  {pe('🤑')} ➤ {totals.get('INR', 0.0):g} ₹\n"
         "──────────────────\n"
-        f"{pe('📱')} Escrow Bot for @SPIDERXESCROWSERVICE\n"
-        f"{pe('💤')} Provided by @SPIDERXESCROWSERVICE !"
+        f"{pe('📱')} Escrow Bot for @KAALESCROWGROUP\n"
+        f"{pe('💤')} Provided by @KAALESCROWGROUP !"
     )
 
 
@@ -310,7 +310,7 @@ def group_is_authorized(chat_id):
 
 
 # ===========================
-# Sequential Trade ID: DL-SPIDER-1, DL-SPIDER-2, ...
+# Sequential Trade ID: DL-KAAL-1, DL-KAAL-2, ...
 # ===========================
 
 def next_trade_id():
@@ -325,10 +325,10 @@ def next_trade_id():
     else:
         seq = len(DEALS) + 1
 
-    tid = f"DL-SPIDER-{seq}"
+    tid = f"DL-KAAL-{seq}"
     while tid in DEALS:  # safety, collision na ho
         seq += 1
-        tid = f"DL-SPIDER-{seq}"
+        tid = f"DL-KAAL-{seq}"
     return tid
 
 
@@ -505,7 +505,7 @@ def welcome_text(first_name):
         f"{pe('⭐️')} <b>Welcome {esc(first_name)}!</b>\n"
         "╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\n"
         f"{pe('❤️')} Escrow Bot for {BRAND}\n"
-        f"{pe('💬')} Provided by @SPIDERXESCROWSERVICE\n\n"
+        f"{pe('💬')} Provided by @KAALESCROWGROUP\n\n"
         f"{pe('🍑')} <b>This is Your Personal Dashboard:</b>\n"
         "╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\n"
         f"Select the option below {pe('⚡️')}\n"
@@ -1109,12 +1109,12 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ==========================================
     # CASE 1: Direct ID
     #
-    # /close DL-SPIDER-4
-    # /close DL-SPIDER-4 300
-    # /close DL-SPIDER-4 cancel
+    # /close DL-KAAL-4
+    # /close DL-KAAL-4 300
+    # /close DL-KAAL-4 cancel
     # ==========================================
     if context.args and re.fullmatch(
-        r"DL-SPIDER-\d+",
+        r"DL-KAAL-\d+",
         context.args[0],
         re.IGNORECASE
     ):
@@ -1134,7 +1134,7 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_text = update.message.reply_to_message.text or ""
 
         match = re.search(
-            r"Trade ID:\s*(DL-SPIDER-\d+)",
+            r"Trade ID:\s*(DL-KAAL-\d+)",
             reply_text,
             re.IGNORECASE
         )
@@ -1161,9 +1161,9 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "<code>/close 300</code>\n"
             "<code>/close cancel</code>\n\n"
             "<b>Ya direct ID se:</b>\n"
-            "<code>/close DL-SPIDER-4</code>\n"
-            "<code>/close DL-SPIDER-4 300</code>\n"
-            "<code>/close DL-SPIDER-4 cancel</code>",
+            "<code>/close DL-KAAL-4</code>\n"
+            "<code>/close DL-KAAL-4 300</code>\n"
+            "<code>/close DL-KAAL-4 cancel</code>",
             parse_mode=ParseMode.HTML,
         )
         return
@@ -1352,12 +1352,12 @@ async def leaderboard_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def deal_lookup_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """/deal DL-SPIDER-5 -> admin kisi bhi deal ki full detail (escrowed_by samet) dekh sakta hai."""
+    """/deal DL-KAAL-5 -> admin kisi bhi deal ki full detail (escrowed_by samet) dekh sakta hai."""
     if not admin_only_allowed(update):
         return
 
     if not context.args:
-        await update.message.reply_text("Usage: <code>/deal DL-SPIDER-5</code>", parse_mode=ParseMode.HTML)
+        await update.message.reply_text("Usage: <code>/deal DL-KAAL-5</code>", parse_mode=ParseMode.HTML)
         return
 
     tid = context.args[0].upper()
@@ -2665,7 +2665,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "/close — Deal complete karo (deal message pe reply karke)",
             "/alldeals — Saari deals ki poori list",
             "/leaderboard — Today + All-time top dealer/earner",
-            "/deal &lt;DL-SPIDER-N&gt; — Kisi bhi deal ki full detail dekho",
+            "/deal &lt;DL-KAAL-N&gt; — Kisi bhi deal ki full detail dekho",
             "/admins — Bot admins ki list dekho",
             "/groups — Bot kin groups me added hai + authorization control",
             "/groupaccess &lt;group_id&gt; — Bot ke Telegram permissions dekho",
@@ -2698,7 +2698,7 @@ def start_dummy_server():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spider Escrow</title>
+    <title>KAAL Escrow</title>
 
     <style>
         * {
@@ -2813,7 +2813,7 @@ def start_dummy_server():
     <div class="card">
         <div class="logo">&#128蜘蛛;</div>
 
-        <h1>Spider Escrow</h1>
+        <h1>KAAL Escrow</h1>
 
         <div class="status">
             <span class="dot"></span>
@@ -2826,14 +2826,14 @@ def start_dummy_server():
 
         <a
             class="telegram"
-            href="https://t.me/SPIDERXESCROWSERVICE"
+            href="https://t.me/KAALESCROWGROUP"
             target="_blank"
         >
-            &#9992; @SPIDERXESCROWSERVICE
+            &#9992; @KAALESCROWGROUP
         </a>
 
         <div class="footer">
-            Spider Escrow Service
+            KAAL Escrow Service
         </div>
     </div>
 </body>
@@ -2920,7 +2920,7 @@ def main():
         asyncio.set_event_loop(asyncio.new_event_loop())
 
     if not BOT_TOKEN:
-        raise RuntimeError("SPIDER_BOT_TOKEN is missing from Render environment variables")
+        raise RuntimeError("KAAL_BOT_TOKEN is missing from Render environment variables")
 
     app = Application.builder().token(BOT_TOKEN).build()
     log_event("BOOT", "python-telegram-bot application created")
