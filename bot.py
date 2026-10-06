@@ -1106,6 +1106,26 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tid = None
     released_amount_arg = None
 
+    # /close can also be sent as a photo caption. The photo itself is only
+    # reused for the completion message; nothing about it is stored in MongoDB.
+    photo_close = bool(
+        update.message
+        and update.message.photo
+        and re.match(
+            r"^\s*/close(?:@\w+)?(?:\s|$)",
+            (update.message.caption or "").strip(),
+            re.IGNORECASE,
+        )
+    )
+    close_args = list(context.args or [])
+    if photo_close:
+        caption_match = re.match(
+            r"^\s*/close(?:@\w+)?(?:\s+([^\s]+))?\s*$",
+            (update.message.caption or "").strip(),
+            re.IGNORECASE,
+        )
+        close_args = [caption_match.group(1)] if caption_match and caption_match.group(1) else []
+
     # ==========================================
     # CASE 1: Direct ID
     #
@@ -1113,15 +1133,15 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # /close DL-KAAL-4 300
     # /close DL-KAAL-4 cancel
     # ==========================================
-    if context.args and re.fullmatch(
+    if close_args and re.fullmatch(
         r"DL-KAAL-\d+",
-        context.args[0],
+        close_args[0],
         re.IGNORECASE
     ):
-        tid = context.args[0].upper()
+        tid = close_args[0].upper()
 
-        if len(context.args) > 1:
-            released_amount_arg = context.args[1]
+        if len(close_args) > 1:
+            released_amount_arg = close_args[1]
 
     # ==========================================
     # CASE 2: Reply karke
@@ -1147,8 +1167,8 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         tid = match.group(1).upper()
 
-        if context.args:
-            released_amount_arg = context.args[0]
+        if close_args:
+            released_amount_arg = close_args[0]
 
     # ==========================================
     # Invalid usage
@@ -1288,10 +1308,21 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{fmt(released_val, currency_val)} smooth escrow deal</code>\n"
         )
 
-    await update.message.reply_text(
-        msg,
-        parse_mode=ParseMode.HTML
-    )
+    if photo_close and not is_cancel:
+        try:
+            await context.bot.send_photo(
+                chat_id=update.message.chat_id,
+                photo=update.message.photo[-1].file_id,
+                caption=msg,
+                parse_mode=ParseMode.HTML,
+            )
+        except (BadRequest, TelegramError):
+            await update.message.reply_text(msg, parse_mode=ParseMode.HTML)
+    else:
+        await update.message.reply_text(
+            msg,
+            parse_mode=ParseMode.HTML
+        )
 
     # Command message delete
     try:
@@ -2936,6 +2967,13 @@ def main():
     app.add_handler(CommandHandler("del", del_cmd))
     app.add_handler(CommandHandler("add", add))
     app.add_handler(CommandHandler("close", close))
+    # Photo caption route for /close; normal /close handler stays unchanged.
+    app.add_handler(
+        MessageHandler(
+            filters.PHOTO & filters.CaptionRegex(r"^\s*/close(?:@\w+)?(?:\s|$)"),
+            close,
+        )
+    )
     app.add_handler(CommandHandler("hold", hold_cmd))
     app.add_handler(CommandHandler("broadcast", broadcast_cmd))
     app.add_handler(CommandHandler("alldeals", alldeals_cmd))
